@@ -113,7 +113,7 @@ router.post('/shopping-lists/:id/items', async (req, res) => {
             [id, itemId, quantity, status]
         );
 
-        res.status(201).json({ message: 'Artikel erfolgreich hinzugefügt' });
+        res.status(201).json({ itemId, message: 'Artikel erfolgreich hinzugefügt' });
     } catch (error) {
         res.status(500).json({ error: error instanceof Error ? error.message : 'Unbekannter Fehler' });
     }
