@@ -1,8 +1,13 @@
 import express from 'express';
+import cors from 'cors';
 import routes from './routes';
 import { initializeDatabase } from './initDB';
 
 const app = express();
+
+// Activate CORS
+app.use(cors());
+
 app.use(express.json());
 
 initializeDatabase();

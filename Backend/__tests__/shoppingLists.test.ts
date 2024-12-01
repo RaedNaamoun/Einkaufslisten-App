@@ -171,3 +171,87 @@ test('DELETE /api/shopping-lists/:id/items/:itemId sollte einen Artikel löschen
     expect(res.body.message).toBe('Artikel erfolgreich entfernt');
 });
 
+//Test: Edit an article in a shopping list
+test('PUT /api/shopping-lists/:listId/items/:itemId sollte einen Artikel aktualisieren', async () => {
+    const list = await request(app).post('/api/shopping-lists').send({
+        name: 'Test List',
+        description: 'This is a test shopping list',
+    });
+
+    const item = await request(app).post(`/api/shopping-lists/${list.body.id}/items`).send({
+        name: 'Test Item',
+        description: 'This is a test item',
+        quantity: 2,
+        status: false,
+    });
+
+    const res = await request(app)
+        .put(`/api/shopping-lists/${list.body.id}/items/${item.body.itemId}`)
+        .send({
+            name: 'Updated Item',
+            description: 'Updated description',
+            quantity: 5,
+            status: true,
+        });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.message).toBe('Artikel erfolgreich aktualisiert');
+
+    const updatedItems = await request(app).get(`/api/shopping-lists/${list.body.id}/items`);
+    expect(updatedItems.body[0]).toHaveProperty('item_name', 'Updated Item');
+    expect(updatedItems.body[0]).toHaveProperty('item_description', 'Updated description');
+    expect(updatedItems.body[0]).toHaveProperty('quantity', 5);
+    expect(updatedItems.body[0]).toHaveProperty('status', true);
+});
+
+//Test: Retrieve shopping lists that contain a specific item
+test('GET /api/shopping-lists/items/:itemName sollte Einkaufslisten mit einem bestimmten Artikel zurückgeben', async () => {
+    const list1 = await request(app).post('/api/shopping-lists').send({
+        name: 'List 1',
+        description: 'First shopping list',
+    });
+
+    const list2 = await request(app).post('/api/shopping-lists').send({
+        name: 'List 2',
+        description: 'Second shopping list',
+    });
+
+    await request(app).post(`/api/shopping-lists/${list1.body.id}/items`).send({
+        name: 'Milk',
+        description: 'Dairy product',
+        quantity: 1,
+        status: false,
+    });
+
+    await request(app).post(`/api/shopping-lists/${list2.body.id}/items`).send({
+        name: 'Milk',
+        description: 'Dairy product',
+        quantity: 2,
+        status: false,
+    });
+
+    const res = await request(app).get('/api/shopping-lists/items/Milk');
+    expect(res.statusCode).toBe(200);
+    expect(res.body.length).toBe(2);
+    expect(res.body[0]).toHaveProperty('name', 'List 1');
+    expect(res.body[1]).toHaveProperty('name', 'List 2');
+});
+
+//Test: Search shopping lists by name or description
+test('GET /api/shopping-lists/search sollte Einkaufslisten anhand von Namen oder Beschreibung suchen', async () => {
+    await request(app).post('/api/shopping-lists').send({
+        name: 'Groceries',
+        description: 'Weekly grocery shopping',
+    });
+
+    await request(app).post('/api/shopping-lists').send({
+        name: 'Electronics',
+        description: 'Shopping list for electronic items',
+    });
+
+    const res = await request(app).get('/api/shopping-lists/search').query({ query: 'grocery' });
+    expect(res.statusCode).toBe(200);
+    expect(res.body.length).toBe(1);
+    expect(res.body[0]).toHaveProperty('name', 'Groceries');
+    expect(res.body[0]).toHaveProperty('description', 'Weekly grocery shopping');
+});

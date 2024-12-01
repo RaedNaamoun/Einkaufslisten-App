@@ -1,0 +1,245 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+.container {
+    padding: 1rem;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+}
+
+.list-container{
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.card, .item-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 30vh;
+    height: 30vh;
+    max-width: calc(33% - 1rem);
+}
+
+.card button, .item-card button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.card button:hover, .item-card button:hover {
+    background-color: #0056b3;
+}
+
+.form-container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1.5rem;
+    max-width: 400px;
+    min-width: 300px;
+    margin: 1rem 2rem;
+    height: 80vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+button {
+    width: 100%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+button:hover:enabled {
+    background-color: #0056b3;
+}
+
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.form-group input[type="number"] {
+    width: 100%;
+}
+
+.form-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 0.5rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #cc0000;
+}
+
+.Update-list-form{
+    position: absolute;
+    top: 7rem;
+    left: 1rem;
+    z-index: 100;
+}
+
+.Update-list-form button{
+    margin-bottom: 1rem;
+}
+
+.update-form {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.update-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.update-form .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.update-form .form-group input,
+.update-form .form-group textarea {
+    width: 93%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.update-form .button-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.update-form .button-group button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+}
+
+.update-form .button-group button:hover {
+    background-color: #0056b3;
+}
+
+.update-form .button-group button[type="button"] {
+    background-color: #ff4d4d;
+}
+
+.update-form .button-group button[type="button"]:hover {
+    background-color: #cc0000;
+}
+
+.item-card button{
+    margin-bottom: 1rem;
+}
+
+.search-form {
+    margin: 1rem 0;
+    display: flex;
+    justify-content:flex-start;
+    gap: 0.5rem;
+    flex-direction: column;
+}
+
+.search-form input {
+    width: 15rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.search-form button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.search-form button:hover {
+    background-color: #0056b3;
+}
+
+.search-form-container{
+    display: flex;
+    flex-direction: column;
+}

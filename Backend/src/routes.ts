@@ -3,7 +3,7 @@ import pool from './db';
 
 const router = Router();
 
-// Einkaufslisten abrufen
+// Retrieve shopping lists
 router.get('/shopping-lists', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM shopping_lists');
@@ -17,7 +17,7 @@ router.get('/shopping-lists', async (req, res) => {
     }
 });
 
-// Alle Artikel einer Einkaufsliste abrufen
+// Retrieve all items in a shopping list
 router.get('/shopping-lists/:id/items', async (req, res) => {
     try {
         const { id } = req.params; // ID der Einkaufsliste
@@ -44,7 +44,7 @@ router.get('/shopping-lists/:id/items', async (req, res) => {
     }
 });
 
-// Einkaufslisten hinzufügen
+// Add shopping list
 router.post('/shopping-lists', async (req, res) => {
     try {
         const { name, description } = req.body;
@@ -62,7 +62,7 @@ router.post('/shopping-lists', async (req, res) => {
     }
 });
 
-// Einkaufslisten bearbeiten
+// Edit shopping list
 router.put('/shopping-lists/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -81,7 +81,41 @@ router.put('/shopping-lists/:id', async (req, res) => {
     }
 });
 
-// Einkaufslisten löschen
+// Edit article
+router.put('/shopping-lists/:listId/items/:itemId', async (req, res) => {
+    try {
+        const { listId, itemId } = req.params;
+        const { name, description, quantity, status } = req.body;
+
+        // Check whether the article exists
+        const itemExists = await pool.query(
+            'SELECT * FROM shopping_list_items WHERE shopping_list_id = $1 AND item_id = $2',
+            [listId, itemId]
+        );
+
+        if (itemExists.rowCount === 0) {
+            res.status(404).json({ message: 'Artikel in der Einkaufsliste nicht gefunden' });
+        }
+
+        // Update article information
+        await pool.query(
+            'UPDATE items SET name = $1, description = $2 WHERE id = $3',
+            [name, description, itemId]
+        );
+
+        await pool.query(
+            'UPDATE shopping_list_items SET quantity = $1, status = $2 WHERE shopping_list_id = $3 AND item_id = $4',
+            [quantity, status, listId, itemId]
+        );
+
+        res.json({ message: 'Artikel erfolgreich aktualisiert' });
+    } catch (error) {
+        res.status(500).json({ error: error instanceof Error ? error.message : 'Unbekannter Fehler' });
+    }
+});
+
+
+// Delete shopping list
 router.delete('/shopping-lists/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -96,7 +130,7 @@ router.delete('/shopping-lists/:id', async (req, res) => {
     }
 });
 
-// Artikel zu einer Einkaufsliste hinzufügen
+// Add an item to a shopping list
 router.post('/shopping-lists/:id/items', async (req, res) => {
     try {
         const { id } = req.params;
@@ -119,7 +153,7 @@ router.post('/shopping-lists/:id/items', async (req, res) => {
     }
 });
 
-// Artikel aus einer Einkaufsliste entfernen
+// Remove an item from a shopping list
 router.delete('/shopping-lists/:id/items/:itemId', async (req, res) => {
     try {
         const { id, itemId } = req.params;
@@ -137,7 +171,7 @@ router.delete('/shopping-lists/:id/items/:itemId', async (req, res) => {
     }
 });
 
-// Einkaufslisten abrufen, die einen bestimmten Artikel enthalten
+// Retrieve shopping lists that contain a specific item
 router.get('/shopping-lists/items/:itemName', async (req, res) => {
     try {
         const { itemName } = req.params;
@@ -157,7 +191,7 @@ router.get('/shopping-lists/items/:itemName', async (req, res) => {
     }
 });
 
-// Einkaufslisten nach Namen oder Beschreibung durchsuchen
+// Search shopping lists by name or description
 router.get('/shopping-lists/search', async (req, res) => {
     try {
         const { query } = req.query;
@@ -173,6 +207,5 @@ router.get('/shopping-lists/search', async (req, res) => {
         res.status(500).json({ error: error instanceof Error ? error.message : 'Unbekannter Fehler' });
     }
 });
-
 
 export default router;
