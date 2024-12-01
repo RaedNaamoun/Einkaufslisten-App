@@ -6,19 +6,22 @@ body {
 }
 
 .navbar {
+    position: fixed;
     background-color: #A594F9;
     display: flex;
     color: #fff;
     padding: 1rem;
     text-align: left;
+    width: 100%;
 }
 .navbar h1{
-    margin-left: 4rem;
+    margin-left: 2rem;
 }
 
 .navbar img{
     width: 4rem;
-    margin-left: 2rem;
+    height: 4rem;
+    margin-left: 4rem;
     transform: rotate(10deg);
 }
 
@@ -34,6 +37,8 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    margin-left: 42rem;
+    margin-top:7rem ;
 }
 
 .card{
@@ -66,6 +71,8 @@ body {
 }
 
 .form-container {
+    position: fixed;
+    top:9rem;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -73,7 +80,7 @@ body {
     max-width: 400px;
     min-width: 300px;
     margin: 1rem 2rem;
-    height: 80vh;
+    height: 60vh;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -85,6 +92,7 @@ body {
 
 .form-group {
     margin-bottom: 1rem;
+    width: 94%;
 }
 
 .form-group label {
@@ -255,8 +263,11 @@ button:hover:enabled {
 }
 
 .search-form-container{
+    position: fixed;
     display: flex;
     flex-direction: column;
+    margin-left: 25rem;
+    top:9rem;
 }
 
 .card select {
@@ -272,5 +283,30 @@ button:hover:enabled {
 }
 
 .item-card{
-    margin-top: 1rem;
+    margin-top: 8rem;
+}
+
+a{
+    margin-left: 1.3rem;
+    font-size: 1.3rem;
+    color: white;
+    background-color: #A594F9;
+    border-radius: 5px;
+    padding: 1.5rem;
+    text-decoration: none;
+}
+
+a:hover{
+    background-color: #8f79fc;
+}
+
+.Addlistform form{
+    margin-bottom: 5rem;
+}
+
+.item-card-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-left: 30rem;
 }

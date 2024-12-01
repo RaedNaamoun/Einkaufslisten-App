@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import pool from './db';
+import axios from 'axios';
 
 const router = Router();
+const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
 
 // Retrieve shopping lists
 router.get('/shopping-lists', async (req, res) => {
@@ -226,6 +228,55 @@ router.put('/shopping-lists/:id/priority', async (req, res) => {
         res.json(result.rows[0]);
     } catch (error) {
         res.status(500).json({ error: error instanceof Error ? error.message : 'Unbekannter Fehler' });
+    }
+});
+
+// Rezepte suchen
+router.get('/recipes/search', async (req, res) => {
+    try {
+        const { query } = req.query;
+
+        const response = await axios.get<{
+            results: { id: number; title: string; image: string }[];
+        }>('https://api.spoonacular.com/recipes/complexSearch', {
+            params: {
+                apiKey: SPOONACULAR_API_KEY,
+                query,
+                number: 10,
+            },
+        });
+
+        res.json(response.data.results);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Fehler beim Abrufen der Rezepte',
+            error: error instanceof Error ? error.message : 'Unbekannter Fehler',
+        });
+    }
+});
+
+// Zutaten eines Rezepts abrufen
+router.get('/recipes/:id/ingredients', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const response = await axios.get<{
+            ingredients: {
+                name: string;
+                amount: { metric: { value: number; unit: string } };
+            }[];
+        }>(`https://api.spoonacular.com/recipes/${id}/ingredientWidget.json`, {
+            params: {
+                apiKey: SPOONACULAR_API_KEY,
+            },
+        });
+
+        res.json(response.data.ingredients);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Fehler beim Abrufen der Zutaten',
+            error: error instanceof Error ? error.message : 'Unbekannter Fehler',
+        });
     }
 });
 

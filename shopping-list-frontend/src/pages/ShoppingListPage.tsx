@@ -27,8 +27,8 @@ const ShoppingListPage = () => {
 
     return (
         <div className="container">
-            <h1>Artikel in der Einkaufsliste:</h1>
             <AddArticleForm listId={Number(id)} onArticleAdded={refetch} />
+            <div className="item-card-container">
             {data?.map((item) => (
                 <div key={item.item_id} className="item-card" style={{ backgroundColor: item.status ? '#F1F3C2' : 'white' }}>
                     {editingArticleId === item.item_id ? (
@@ -53,6 +53,7 @@ const ShoppingListPage = () => {
                 )}
                 </div>
             ))}
+            </div>
         </div>
     );
 };

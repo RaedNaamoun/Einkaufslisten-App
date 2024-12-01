@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createShoppingList } from '../api/api';
 import './styles.css';
+import { Link } from 'react-router-dom';
 
 interface AddListFormProps {
     onListAdded: () => void;
@@ -36,7 +37,7 @@ const AddListForm: React.FC<AddListFormProps> = ({ onListAdded }) => {
     };
 
     return (
-        <div className="form-container">
+        <div className="form-container Addlistform">
             <h2>Neue Liste hinzufügen</h2>
             {error && <p className="error">{error}</p>}
             <form onSubmit={handleSubmit}>
@@ -63,6 +64,7 @@ const AddListForm: React.FC<AddListFormProps> = ({ onListAdded }) => {
                     {isSubmitting ? 'Wird hinzugefügt...' : 'Liste hinzufügen'}
                 </button>
             </form>
+            <Link to="/recipes">Rezepte durchsuchen</Link>
         </div>
     );
 };

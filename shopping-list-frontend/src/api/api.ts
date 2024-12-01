@@ -77,5 +77,22 @@ export const updateListPriority = async (id: number, priority: number) => {
     return response.data;
 };
 
+// Rezepte suchen
+export const searchRecipes = async (query: string) => {
+    const response = await axios.get<{ id: number; title: string; image: string }[]>(
+        'http://localhost:5000/api/recipes/search',
+        { params: { query } }
+    );
+    return response.data;
+};
+
+// Zutaten eines Rezepts abrufen
+export const getRecipeIngredients = async (id: number) => {
+    const response = await axios.get<{
+        name: string;
+        amount: { metric: { value: number; unit: string } };
+    }[]>(`http://localhost:5000/api/recipes/${id}/ingredients`);
+    return response.data;
+};
 
 
