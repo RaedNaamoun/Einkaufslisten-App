@@ -255,3 +255,22 @@ test('GET /api/shopping-lists/search sollte Einkaufslisten anhand von Namen oder
     expect(res.body[0]).toHaveProperty('name', 'Groceries');
     expect(res.body[0]).toHaveProperty('description', 'Weekly grocery shopping');
 });
+
+// Test: Update the priority of a shopping list
+test('PUT /api/shopping-lists/:id/priority sollte die Priorität einer Einkaufsliste aktualisieren', async () => {
+    const list = await request(app).post('/api/shopping-lists').send({
+        name: 'Test List',
+        description: 'This is a test shopping list',
+    });
+
+    const res = await request(app)
+        .put(`/api/shopping-lists/${list.body.id}/priority`)
+        .send({ priority: 1 }); // High Priority
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('id', list.body.id);
+    expect(res.body).toHaveProperty('priority', 1);
+
+    const lists = await request(app).get('/api/shopping-lists');
+    expect(lists.body[0]).toHaveProperty('priority', 1);
+});

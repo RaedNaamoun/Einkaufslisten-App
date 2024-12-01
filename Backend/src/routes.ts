@@ -6,7 +6,7 @@ const router = Router();
 // Retrieve shopping lists
 router.get('/shopping-lists', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM shopping_lists');
+        const result = await pool.query('SELECT * FROM shopping_lists ORDER BY priority ASC, id ASC');
         res.json(result.rows);
     } catch (error) {
         if (error instanceof Error) {
@@ -203,6 +203,27 @@ router.get('/shopping-lists/search', async (req, res) => {
         );
 
         res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: error instanceof Error ? error.message : 'Unbekannter Fehler' });
+    }
+});
+
+// Update list priority
+router.put('/shopping-lists/:id/priority', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { priority } = req.body;
+
+        if (![1, 2, 3].includes(priority)) {
+            res.status(400).json({ message: 'Ungültige Priorität. Werte: 1 (Hoch), 2 (Mittel), 3 (Niedrig).' });
+        }
+
+        const result = await pool.query(
+            'UPDATE shopping_lists SET priority = $1 WHERE id = $2 RETURNING *',
+            [priority, id]
+        );
+
+        res.json(result.rows[0]);
     } catch (error) {
         res.status(500).json({ error: error instanceof Error ? error.message : 'Unbekannter Fehler' });
     }

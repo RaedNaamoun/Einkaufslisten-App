@@ -2,6 +2,7 @@ export interface ShoppingList {
     id: number;
     name: string;
     description: string;
+    priority: number;
     created_at: string;
 }
 

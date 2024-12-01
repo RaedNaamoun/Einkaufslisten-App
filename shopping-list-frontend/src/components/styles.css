@@ -6,10 +6,20 @@ body {
 }
 
 .navbar {
-    background-color: #333;
+    background-color: #A594F9;
+    display: flex;
     color: #fff;
     padding: 1rem;
-    text-align: center;
+    text-align: left;
+}
+.navbar h1{
+    margin-left: 4rem;
+}
+
+.navbar img{
+    width: 4rem;
+    margin-left: 2rem;
+    transform: rotate(10deg);
 }
 
 .container {
@@ -26,19 +36,24 @@ body {
     gap: 1rem;
 }
 
+.card{
+    min-width: 25vh;
+}
+
 .card, .item-card {
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 15px;
     padding: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 30vh;
+    width: 28vh;
     height: 30vh;
     max-width: calc(33% - 1rem);
+    transition: border-color 0.5s ease;
 }
 
 .card button, .item-card button {
-    background-color: #007bff;
+    background-color: #6A9AB0;
     color: #fff;
     border: none;
     padding: 0.5rem 1rem;
@@ -47,7 +62,7 @@ body {
 }
 
 .card button:hover, .item-card button:hover {
-    background-color: #0056b3;
+    background-color: #3A6D8C;
 }
 
 .form-container {
@@ -89,7 +104,7 @@ body {
 
 button {
     width: 100%;
-    background-color: #007bff;
+    background-color: #6A9AB0;
     color: #fff;
     border: none;
     padding: 0.75rem;
@@ -104,7 +119,7 @@ button:disabled {
 }
 
 button:hover:enabled {
-    background-color: #0056b3;
+    background-color: #3A6D8C;
 }
 
 .error {
@@ -189,12 +204,12 @@ button:hover:enabled {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #007bff;
+    background-color: #6A9AB0;
     color: white;
 }
 
 .update-form .button-group button:hover {
-    background-color: #0056b3;
+    background-color: #3A6D8C;
 }
 
 .update-form .button-group button[type="button"] {
@@ -229,17 +244,33 @@ button:hover:enabled {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: #6A9AB0;
     color: white;
     cursor: pointer;
     font-size: 1rem;
 }
 
 .search-form button:hover {
-    background-color: #0056b3;
+    background-color: #3A6D8C;
 }
 
 .search-form-container{
     display: flex;
     flex-direction: column;
+}
+
+.card select {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    margin-left: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.item-card{
+    margin-top: 1rem;
 }

@@ -71,4 +71,11 @@ export const getListsByItem = async (itemName: string) => {
     return response.data;
 };
 
+// Update list priority
+export const updateListPriority = async (id: number, priority: number) => {
+    const response = await axios.put(`${API_URL}/shopping-lists/${id}/priority`, { priority });
+    return response.data;
+};
+
+
 

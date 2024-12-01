@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
-import { fetchShoppingLists, searchShoppingLists, getListsByItem } from '../api/api';
+import { useQuery, useMutation  } from 'react-query';
+import { fetchShoppingLists, searchShoppingLists, getListsByItem, updateListPriority } from '../api/api';
 import { ShoppingList } from '../types';
 import ShoppingListCard from '../components/ShoppingListCard';
 import { useNavigate } from 'react-router-dom';
@@ -47,6 +47,18 @@ const HomePage = () => {
         }
     };
 
+     // Mutation for priority update
+     const mutation = useMutation(({ id, priority }: { id: number; priority: number }) =>
+        updateListPriority(id, priority),
+        {
+            onSuccess: () => refetch(), // Update lists after success
+        }
+    );
+
+    const handlePriorityChange = (id: number, priority: number) => {
+        mutation.mutate({ id, priority });
+    };
+
     if (isLoading) return <p>Loading...</p>;
 
     return (
@@ -81,6 +93,7 @@ const HomePage = () => {
                         onViewDetails={() => navigate(`/lists/${list.id}`)}
                         onDelete={refetch} // Refreshes the view after deletion
                         onUpdate={refetch} // Refreshes the view after editing
+                        onPriorityChange={handlePriorityChange} // Refreshes the view after Priority change
                     />
                 ))}
             </div>
