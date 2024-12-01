@@ -231,7 +231,7 @@ router.put('/shopping-lists/:id/priority', async (req, res) => {
     }
 });
 
-// Rezepte suchen
+// search for a recept
 router.get('/recipes/search', async (req, res) => {
     try {
         const { query } = req.query;
@@ -255,7 +255,7 @@ router.get('/recipes/search', async (req, res) => {
     }
 });
 
-// Zutaten eines Rezepts abrufen
+// Call up the ingredients of a recipe
 router.get('/recipes/:id/ingredients', async (req, res) => {
     try {
         const { id } = req.params;
@@ -275,6 +275,68 @@ router.get('/recipes/:id/ingredients', async (req, res) => {
     } catch (error) {
         res.status(500).json({
             message: 'Fehler beim Abrufen der Zutaten',
+            error: error instanceof Error ? error.message : 'Unbekannter Fehler',
+        });
+    }
+});
+
+// Add ingredients of a recipe to a new shopping list
+router.post('/recipes/:id/add-to-shopping-list', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { listName, description } = req.body;
+
+        // 1. Zutaten des Rezepts abrufen
+        const response = await axios.get<{
+            ingredients: {
+                name: string;
+                amount: { metric: { value: number; unit: string } };
+            }[];
+        }>(`https://api.spoonacular.com/recipes/${id}/ingredientWidget.json`, {
+            params: { apiKey: SPOONACULAR_API_KEY },
+        });
+
+        const ingredients = response.data.ingredients;
+
+        // 2. Neue Einkaufsliste erstellen
+        const shoppingListResult = await pool.query(
+            'INSERT INTO shopping_lists (name, description) VALUES ($1, $2) RETURNING id',
+            [listName, description]
+        );
+
+        const shoppingListId = shoppingListResult.rows[0].id;
+
+        // 3. Zutaten zur Einkaufsliste hinzufügen
+        for (const ingredient of ingredients) {
+            const quantity = ingredient.amount.metric.value;
+            const unit = ingredient.amount.metric.unit;
+            const name = ingredient.name;
+
+            console.log(`Parsed Ingredient: ${quantity} ${unit} ${name}`); // Debugging
+
+            // Füge den Artikel in die Datenbank ein
+            const itemResult = await pool.query(
+                'INSERT INTO items (name, description) VALUES ($1, $2) RETURNING id',
+                [name, `${quantity} ${unit}`]
+            );
+
+            const itemId = itemResult.rows[0].id;
+
+            // Verknüpfe den Artikel mit der Einkaufsliste
+            await pool.query(
+                'INSERT INTO shopping_list_items (shopping_list_id, item_id, quantity, status) VALUES ($1, $2, $3, $4)',
+                [shoppingListId, itemId, quantity, false]
+            );
+        }
+
+        res.status(201).json({
+            message: 'Neue Einkaufsliste erstellt und Zutaten hinzugefügt.',
+            shoppingListId,
+        });
+    } catch (error) {
+        console.error('Fehler:', error); // Debugging
+        res.status(500).json({
+            message: 'Fehler beim Hinzufügen der Zutaten zur Einkaufsliste.',
             error: error instanceof Error ? error.message : 'Unbekannter Fehler',
         });
     }

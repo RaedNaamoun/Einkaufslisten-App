@@ -95,4 +95,15 @@ export const getRecipeIngredients = async (id: number) => {
     return response.data;
 };
 
-
+// Add ingredients of a recipe to a new shopping list
+export const addRecipeToShoppingList = async (
+    recipeId: number,
+    listName: string,
+    description: string
+) => {
+    const response = await axios.post(
+        `http://localhost:5000/api/recipes/${recipeId}/add-to-shopping-list`,
+        { listName, description }
+    );
+    return response.data;
+};

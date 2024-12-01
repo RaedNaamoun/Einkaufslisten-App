@@ -16,6 +16,6 @@ CREATE TABLE IF NOT EXISTS shopping_list_items (
     shopping_list_id INT REFERENCES shopping_lists(id) ON DELETE CASCADE,
     item_id INT REFERENCES items(id) ON DELETE CASCADE,
     PRIMARY KEY (shopping_list_id, item_id),
-    quantity INT,
+    quantity NUMERIC,
     status BOOLEAN DEFAULT FALSE
 );

@@ -19,6 +19,7 @@ h1 {
     gap: 1rem;
     max-width: 70%;
     margin-left: 2rem;
+    margin-right: 2rem;
 }
 
 .recipe-card {
@@ -42,6 +43,7 @@ h1 {
 
 .ingredients {
     margin-top: 2rem;
+    margin-right: 10rem;
     width: 15%;
 }
 
@@ -60,4 +62,32 @@ h1 {
 
 .recepie-page-container{
     padding-top: 10rem;
+}
+
+.add-list-form {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.add-list-form input,
+.add-list-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-list-form button {
+    padding: 0.5rem 1rem;
+    background-color: #6A9AB0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-list-form button:hover {
+    background-color: #3A6D8C;
 }

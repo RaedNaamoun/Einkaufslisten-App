@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { searchRecipes, getRecipeIngredients } from '../api/api';
+import { searchRecipes, getRecipeIngredients, addRecipeToShoppingList } from '../api/api';
 import './styles.css';
 
 const RecipesPage = () => {
@@ -8,6 +8,9 @@ const RecipesPage = () => {
         { name: string; amount: { metric: { value: number; unit: string } } }[]
     >([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [listName, setListName] = useState('');
+    const [description, setDescription] = useState('');
+    const [selectedRecipeId, setSelectedRecipeId] = useState<number | null>(null);
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -18,6 +21,18 @@ const RecipesPage = () => {
     const handleRecipeClick = async (id: number) => {
         const ingredients = await getRecipeIngredients(id);
         setIngredients(ingredients);
+        setSelectedRecipeId(id);
+    };
+
+    const handleAddToShoppingList = async () => {
+        if (!selectedRecipeId || !listName) {
+            alert('Bitte geben Sie einen Listennamen ein.');
+            return;
+        }
+        await addRecipeToShoppingList(selectedRecipeId, listName, description);
+        alert('Die Zutaten wurden erfolgreich zu einer neuen Einkaufsliste hinzugefügt!');
+        setListName('');
+        setDescription('');
     };
 
     return (
@@ -58,6 +73,22 @@ const RecipesPage = () => {
                                 </li>
                             ))}
                         </ul>
+                        <div className="add-list-form">
+                            <input
+                                type="text"
+                                value={listName}
+                                onChange={(e) => setListName(e.target.value)}
+                                placeholder="Name der Einkaufsliste"
+                            />
+                            <textarea
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                placeholder="Beschreibung"
+                            />
+                            <button onClick={handleAddToShoppingList}>
+                                Zutaten zur Einkaufsliste hinzufügen
+                            </button>
+                        </div>
                     </>
                 )}
             </div>
