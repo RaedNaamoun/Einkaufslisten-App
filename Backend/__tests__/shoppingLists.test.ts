@@ -200,7 +200,7 @@ test('PUT /api/shopping-lists/:listId/items/:itemId sollte einen Artikel aktuali
     const updatedItems = await request(app).get(`/api/shopping-lists/${list.body.id}/items`);
     expect(updatedItems.body[0]).toHaveProperty('item_name', 'Updated Item');
     expect(updatedItems.body[0]).toHaveProperty('item_description', 'Updated description');
-    expect(updatedItems.body[0]).toHaveProperty('quantity', 5);
+    expect(updatedItems.body[0]).toHaveProperty('quantity', "5");
     expect(updatedItems.body[0]).toHaveProperty('status', true);
 });
 
